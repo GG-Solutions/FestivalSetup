@@ -1,17 +1,26 @@
 package eventsetup;
 
-public class TeamObject 
+public class TeamObject extends EventPageSetup
 {
-	private String teamName = "";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static String teamName = "";
 	private String category = "";
+	@SuppressWarnings("unused")
 	private int place = -1;		//set to -1 as default?
 	
+	@SuppressWarnings("unused")
 	private char firstRaceTimeFlag = '*';
 	private float firstRaceTime = 0.0f; 
+	@SuppressWarnings("unused")
 	private char secondRaceTimeFlag = '*';
 	private float secondRaceTime = 0.0f; 
+	@SuppressWarnings("unused")
 	private char semiFinalRaceTimeFlag = '*';
 	private float semiFinalRaceTime = 0.0f; 
+	@SuppressWarnings("unused")
 	private char finalRaceTimeFlag = '*';
 	private float finalRaceTime = 0.0f; 
 	private float averagedRaceTime = 0.0f; 

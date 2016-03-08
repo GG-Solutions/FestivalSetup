@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -12,34 +13,38 @@ import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
 
 public class EventPageSetup extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel teamSetup;
 	private JTextField FestName;
-	private static String festName;
 	private JTextField TBR;
-	private static String tbr;
 	private JTextField LaneInput;
-	private static String lanes;
-	private JTextField BreakTime;
+	private JFormattedTextField BreakTime;
 	private JTextField AddCat;
-	private JTextField BreakEndTime;
+	private JFormattedTextField BreakEndTime;
 	private JTextField teamName;
 	private JTextField BreakList;
-	private ArrayList<String> breakList = new ArrayList<String>();
-	private ArrayList<String> Category = new ArrayList<String>();
+	private JList<?> CatList;
+	private JList<?> CatList2;
+	private JComboBox<String> CatBox;
 	private String tempCat;
 	private String tempBreak;
 		
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -74,7 +79,7 @@ public class EventPageSetup extends JFrame {
 		teamSetup.setLayout(null);
 		teamSetup.setBorder(new EmptyBorder(5, 5, 5, 5));
 		teamSetup.setBackground(Color.LIGHT_GRAY);
-		teamSetup.setBounds(0, 328, 540, 38);
+		teamSetup.setBounds(0, 0, 540, 366);
 		contentPane.add(teamSetup);
 		
 		JLabel label = new JLabel("Team Setup");
@@ -95,18 +100,18 @@ public class EventPageSetup extends JFrame {
 		label_2.setBounds(271, 57, 61, 16);
 		teamSetup.add(label_2);
 		
-		JComboBox CatBox = new JComboBox();
+		JComboBox<String> CatBox = new JComboBox<String>();
 		CatBox.setBounds(263, 74, 121, 27);
 		teamSetup.add(CatBox);
 		
-		JButton addTeamCat = new JButton("+");
-		addTeamCat.addActionListener(new ActionListener() {
+		JButton addTeam = new JButton("Add Team");
+		addTeam.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{addTeam(teamName.getText(), CatBox.getSelectedItem());}catch (Exception e1) {
-					e1.printStackTrace();}}
+				addTeam(teamName.getText());
+				}
 		});
-		addTeamCat.setBounds(381, 73, 49, 29);
-		teamSetup.add(addTeamCat);
+		addTeam.setBounds(148, 52, 90, 29);
+		teamSetup.add(addTeam);
 		
 		JFormattedTextField teamList = new JFormattedTextField();
 		teamList.setBounds(6, 100, 528, 162);
@@ -115,9 +120,8 @@ public class EventPageSetup extends JFrame {
 		JButton teamDelete = new JButton("Delete");
 		teamDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{deleteTeam(teamList.getSelectedText());}catch (Exception e2) {
-					e2.printStackTrace();
-			}}
+				deleteTeam(teamList.getSelectedText());
+				}
 		});
 		teamDelete.setBounds(202, 260, 84, 29);
 		teamSetup.add(teamDelete);
@@ -125,9 +129,8 @@ public class EventPageSetup extends JFrame {
 		JButton undoTeamDelete = new JButton("Undo");
 		undoTeamDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{teamUndoDelete();}catch (Exception e3) {
-					e3.printStackTrace();}
-			}
+				teamUndoDelete();
+				}
 		});
 		undoTeamDelete.setBounds(287, 260, 74, 29);
 		teamSetup.add(undoTeamDelete);
@@ -149,6 +152,15 @@ public class EventPageSetup extends JFrame {
 		});
 		finish.setBounds(417, 331, 117, 29);
 		teamSetup.add(finish);
+		
+		JButton addCatToTeam = new JButton("+");
+		addCatToTeam.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addCatToTeam(CatBox.getSelectedItem());
+			}
+		});
+		addCatToTeam.setBounds(381, 73, 43, 29);
+		teamSetup.add(addCatToTeam);
 		
 		JLabel lblEventSetup = new JLabel("Event Setup");
 		lblEventSetup.setBounds(214, 6, 111, 25);
@@ -186,32 +198,40 @@ public class EventPageSetup extends JFrame {
 		LaneInput.setBounds(146, 111, 44, 26);
 		contentPane.add(LaneInput);
 		
-		JLabel lblBreakTimes = new JLabel("Break Times");
-		lblBreakTimes.setBounds(282, 48, 76, 16);
+		JLabel lblBreakTimes = new JLabel("Break Time(s)");
+		lblBreakTimes.setBounds(274, 48, 84, 16);
 		contentPane.add(lblBreakTimes);
 		
-		BreakTime = new JTextField();
-		BreakTime.setColumns(5);
+		MaskFormatter broken = null;
+		try {
+			broken = new MaskFormatter("##h:##m");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		BreakTime = new JFormattedTextField(broken);
+		BreakTime.setText("  h:   m");
 		BreakTime.setBounds(359, 45, 51, 26);
 		contentPane.add(BreakTime);
 		
 		JButton AddBreak = new JButton("+");
 		AddBreak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addToBreak(BreakTime.getText(), BreakEndTime.getText());
+				addToBreak(BreakTime.getValue(), BreakEndTime.getValue());
 			}
 		});
 		AddBreak.setBounds(453, 45, 51, 29);
 		contentPane.add(AddBreak);
 		
-		JTextField BreakList = new JTextField();
+		BreakList = new JFormattedTextField(broken);
 		BreakList.setBounds(282, 83, 214, 63);
 		contentPane.add(BreakList);
 		
 		JButton DeleteBreak = new JButton("Delete");
 		DeleteBreak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteBreak(BreakList.getSelectedText().toString());
+				deleteBreak(BreakList.getSelectedText());
 				}
 		});
 		DeleteBreak.setBounds(363, 152, 69, 29);
@@ -220,9 +240,8 @@ public class EventPageSetup extends JFrame {
 		JButton UndoDelBreak = new JButton("Undo");
 		UndoDelBreak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{deleteBreakUndo();}catch (Exception e6) {
-					e6.printStackTrace();}
-			}
+				deleteBreakUndo();
+				}
 		});
 		UndoDelBreak.setBounds(427, 152, 69, 29);
 		contentPane.add(UndoDelBreak);
@@ -245,7 +264,7 @@ public class EventPageSetup extends JFrame {
 		AddCatButton.setBounds(169, 181, 51, 29);
 		contentPane.add(AddCatButton);
 		
-		JList CatList = new JList();
+		JList<Object> CatList = new JList<Object>();
 		CatList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		CatList.setBounds(6, 228, 214, 63);
 		contentPane.add(CatList);
@@ -272,7 +291,7 @@ public class EventPageSetup extends JFrame {
 		lblUnused.setBounds(6, 210, 61, 16);
 		contentPane.add(lblUnused);
 		
-		JList CatList2 = new JList();
+		JList<Object> CatList2 = new JList<Object>();
 		CatList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		CatList2.setBounds(282, 228, 214, 63);
 		contentPane.add(CatList2);
@@ -308,10 +327,10 @@ public class EventPageSetup extends JFrame {
 		btnNext.setBounds(417, 331, 117, 29);
 		contentPane.add(btnNext);
 		
-		BreakEndTime = new JTextField();
+		BreakEndTime = new JFormattedTextField(broken);
 		BreakEndTime.setBounds(407, 45, 51, 26);
+		BreakEndTime.setText("  h:   m");
 		contentPane.add(BreakEndTime);
-		BreakEndTime.setColumns(5);
 		
 		JLabel lblStart = new JLabel("Start");
 		lblStart.setBounds(363, 29, 34, 16);
@@ -323,65 +342,90 @@ public class EventPageSetup extends JFrame {
 	}
 	
 	//breaks for event setup
-	public void addToBreak(String start, String end){
-		breakList.add(start + " " + end + "\n");
-		BreakList.setText(breakList.toString());
+	public void addToBreak(Object start, Object end){
+		FestivalObject.breakList.add(start + "-" + end + "\n");
+		BreakList.setText(FestivalObject.getBreakList().toString());
 	}
+	
 	public void deleteBreak(String selected){
 		tempBreak = selected;
-		breakList.remove(selected);
+		FestivalObject.breakList.remove(selected);
 		BreakList.remove(BreakList.getSelectedText().indexOf(selected));
 	}
+	
 	public void deleteBreakUndo(){
-		breakList.add(tempBreak);
+		FestivalObject.breakList.add(tempBreak);
 	}
 	
 	//actions for categories during event setup
 	public void addCat(String cat){
-		Category.add(cat);
+		FestivalObject.Category.add(cat);
 	}
+	
 	public void deleteCat(String deadCat){
-		tempCat = Category.get(Category.indexOf(deadCat));
-		Category.remove(deadCat);
+		tempCat = FestivalObject.Category.get(FestivalObject.Category.indexOf(deadCat));
+		FestivalObject.Category.remove(deadCat);
 	}
+	
 	public void deleteCatUndo(){
-		Category.add(tempCat);
+		FestivalObject.Category.add(tempCat);
 	}
+	
 	public void moveCatUse(String useCat){
-		
+		CatList2.add((Component) CatList.getSelectedValue());
+		CatBox.addItem(useCat);
 	}
+	
 	public void moveCatBack(String noUseCat){
-		
+		CatList.add((Component) CatList2.getSelectedValue());
+		CatBox.removeItem(noUseCat);
 	}
 	
 	//page buttons
 	public void nextPage(){
-		festName = FestName.getText();
-		tbr = TBR.getText();
-		lanes = LaneInput.getText();
+		FestivalObject.festName = FestName.getText();
+		FestivalObject.tbr = TBR.getText();
+		FestivalObject.lanes = LaneInput.getText();
 		teamSetup.setVisible(true);
 	}
+	
 	public void prevPage(){
 		teamSetup.setVisible(false);
 	}
+	
 	public void finish(){
 		teamSetup.setVisible(false);
 		contentPane.setVisible(false);
+		//following prints are to test if the variables are getting information
+		System.out.println(FestivalObject.getFestName());
+		System.out.println(FestivalObject.getTBR());
+		System.out.println(FestivalObject.getLanes());
+		System.out.println(FestivalObject.getCategory());
+		System.out.println(FestivalObject.getBreakList());
+		System.out.println(FestivalObject.getTeam());
+		//seems these ones are...
 	}
 	
 	//actions dealing w/ teams
-	public void addTeam(String name, Object Cat){
+	public void addTeam(String name){
+		if(FestivalObject.Team.contains(name)){
+			//update team category list
+		}else{
+			FestivalObject.Team.add(name);
+		}
+	}
+	
+	public void addCatToTeam(Object Cat){
 		
 	}
+	
 	public void deleteTeam(String noTeam){
 		
 	}
+	
 	public void teamUndoDelete(){
 		
 	}
-	
-	
-
 }
 
 

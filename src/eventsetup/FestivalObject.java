@@ -3,18 +3,25 @@ package eventsetup;
 import java.util.ArrayList;
 
 
-public class FestivalObject {
+public class FestivalObject extends EventPageSetup{
 
 	
-	private static String festName;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected static String festName;
 	
-	private static String tbr;
+	protected static String tbr;
 	
-	private static String lanes;
+	protected static String lanes;
 	
-	private ArrayList<String> breakList = new ArrayList<String>();
+	protected static ArrayList<String> breakList = new ArrayList<String>();
 	
-	private ArrayList<String> Category = new ArrayList<String>();
+	protected static ArrayList<String> Category = new ArrayList<String>();
+	
+	protected static ArrayList<String> Team = new ArrayList<String>();
 
 	
 	public FestivalObject() {};
@@ -44,20 +51,28 @@ public class FestivalObject {
 		FestivalObject.lanes = lanes;
 	}
 
-	public ArrayList<String> getBreakList() {
+	public static ArrayList<String> getBreakList() {
 		return breakList;
 	}
 
 	public void setBreakList(ArrayList<String> breakList) {
-		this.breakList = breakList;
+		FestivalObject.breakList = breakList;
 	}
 
-	public ArrayList<String> getCategory() {
+	public static ArrayList<String> getCategory() {
 		return Category;
 	}
 
 	public void setCategory(ArrayList<String> category) {
 		Category = category;
+	}
+	
+	public static ArrayList<String> getTeam() {
+		return Team;
+	}
+
+	public void setTeam(ArrayList<String> team) {
+		Team = team;
 	}
 	
 }
