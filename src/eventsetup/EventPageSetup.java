@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 
@@ -42,7 +43,7 @@ public class EventPageSetup extends JFrame {
 	private JList<?> CatList2;
 	private JComboBox<String> CatBox;
 	private String tempCat;
-	private String tempBreak;
+	private Integer tempBreak;
 		
 	
 	/**
@@ -202,29 +203,30 @@ public class EventPageSetup extends JFrame {
 		lblBreakTimes.setBounds(274, 48, 84, 16);
 		contentPane.add(lblBreakTimes);
 		
-		MaskFormatter broken = null;
-		try {
-			broken = new MaskFormatter("##h:##m");
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		MaskFormatter broken = null;
+//		try {
+//			broken = new MaskFormatter("##:##");
+//			broken.setAllowsInvalid(false);
+//		} catch (ParseException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		
-		BreakTime = new JFormattedTextField(broken);
-		BreakTime.setText("  h:   m");
+		BreakTime = new JFormattedTextField();//broken);
+		BreakTime.setText("");
 		BreakTime.setBounds(359, 45, 51, 26);
 		contentPane.add(BreakTime);
 		
 		JButton AddBreak = new JButton("+");
 		AddBreak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addToBreak(BreakTime.getValue(), BreakEndTime.getValue());
+				addToBreak(BreakTime.getText(), BreakEndTime.getText());
 			}
 		});
 		AddBreak.setBounds(453, 45, 51, 29);
 		contentPane.add(AddBreak);
 		
-		BreakList = new JFormattedTextField(broken);
+		BreakList = new JFormattedTextField();//broken);
 		BreakList.setBounds(282, 83, 214, 63);
 		contentPane.add(BreakList);
 		
@@ -327,9 +329,9 @@ public class EventPageSetup extends JFrame {
 		btnNext.setBounds(417, 331, 117, 29);
 		contentPane.add(btnNext);
 		
-		BreakEndTime = new JFormattedTextField(broken);
+		BreakEndTime = new JFormattedTextField();//broken);
 		BreakEndTime.setBounds(407, 45, 51, 26);
-		BreakEndTime.setText("  h:   m");
+		BreakEndTime.setText("");
 		contentPane.add(BreakEndTime);
 		
 		JLabel lblStart = new JLabel("Start");
@@ -342,15 +344,21 @@ public class EventPageSetup extends JFrame {
 	}
 	
 	//breaks for event setup
-	public void addToBreak(Object start, Object end){
-		FestivalObject.breakList.add(start + "-" + end + "\n");
-		BreakList.setText(FestivalObject.getBreakList().toString());
+	public void addToBreak(String start, String end){
+		ArrayList<Integer> q = new ArrayList<Integer>();
+		ArrayList<Integer> w = new ArrayList<Integer>();
+		q.add(Integer.parseInt(start));
+		w.add(Integer.parseInt(end));
+		FestivalObject.breakList.addAll(q);
+		FestivalObject.breakList.addAll(w);
+		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
 	public void deleteBreak(String selected){
-		tempBreak = selected;
+		tempBreak = Integer.parseInt(selected);
+		System.out.println(tempBreak);
 		FestivalObject.breakList.remove(selected);
-		BreakList.remove(BreakList.getSelectedText().indexOf(selected));
+		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
 	public void deleteBreakUndo(){

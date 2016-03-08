@@ -17,7 +17,7 @@ public class FestivalObject extends EventPageSetup{
 	
 	protected static String lanes;
 	
-	protected static ArrayList<String> breakList = new ArrayList<String>();
+	protected static ArrayList<Integer> breakList = new ArrayList<Integer>();
 	
 	protected static ArrayList<String> Category = new ArrayList<String>();
 	
@@ -51,11 +51,11 @@ public class FestivalObject extends EventPageSetup{
 		FestivalObject.lanes = lanes;
 	}
 
-	public static ArrayList<String> getBreakList() {
+	public static ArrayList<Integer> getBreakList() {
 		return breakList;
 	}
 
-	public void setBreakList(ArrayList<String> breakList) {
+	public void setBreakList(ArrayList<Integer> breakList) {
 		FestivalObject.breakList = breakList;
 	}
 
