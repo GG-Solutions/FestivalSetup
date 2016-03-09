@@ -5,20 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
 import java.awt.Color;
-import java.awt.Component;
-
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -39,10 +33,12 @@ public class EventPageSetup extends JFrame {
 	private JFormattedTextField BreakEndTime;
 	private JTextField teamName;
 	private JTextField BreakList;
-	private JList<?> CatList;
-	private JList<?> CatList2;
+	private JFormattedTextField CatList;
+	private JFormattedTextField CatList2;
 	private JComboBox<String> CatBox;
 	private String tempCat;
+	private String tempCat2;
+	private String tempCat3;
 	private Integer tempBreak;
 		
 	
@@ -266,15 +262,14 @@ public class EventPageSetup extends JFrame {
 		AddCatButton.setBounds(169, 181, 51, 29);
 		contentPane.add(AddCatButton);
 		
-		JList<Object> CatList = new JList<Object>();
-		CatList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		CatList = new JFormattedTextField();
 		CatList.setBounds(6, 228, 214, 63);
 		contentPane.add(CatList);
 		
 		JButton DelCat = new JButton("Delete");
 		DelCat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteCat(CatList.getSelectedValue().toString());
+				deleteCat(CatList.getSelectedText());
 				}
 		});
 		DelCat.setBounds(87, 297, 69, 29);
@@ -293,8 +288,7 @@ public class EventPageSetup extends JFrame {
 		lblUnused.setBounds(6, 210, 61, 16);
 		contentPane.add(lblUnused);
 		
-		JList<Object> CatList2 = new JList<Object>();
-		CatList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		CatList2 = new JFormattedTextField();
 		CatList2.setBounds(282, 228, 214, 63);
 		contentPane.add(CatList2);
 		
@@ -305,7 +299,7 @@ public class EventPageSetup extends JFrame {
 		JButton UseCat = new JButton(">");
 		UseCat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				moveCatUse(CatList.getSelectedValue().toString());
+				moveCatUse(CatList.getSelectedText());
 				}
 		});
 		UseCat.setBounds(226, 228, 44, 29);
@@ -314,7 +308,7 @@ public class EventPageSetup extends JFrame {
 		JButton UnuseCat = new JButton("<");
 		UnuseCat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				moveCatBack(CatList2.getSelectedValue().toString());
+				moveCatBack(CatList2.getSelectedText());
 				}
 		});
 		UnuseCat.setBounds(226, 262, 44, 29);
@@ -357,36 +351,63 @@ public class EventPageSetup extends JFrame {
 	public void deleteBreak(String selected){
 		tempBreak = Integer.parseInt(selected);
 		System.out.println(tempBreak);
-		FestivalObject.breakList.remove(selected);
+		try{
+		FestivalObject.breakList.remove(tempBreak);}catch(NumberFormatException e){ e.getStackTrace();}
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
 	public void deleteBreakUndo(){
 		FestivalObject.breakList.add(tempBreak);
+		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
 	//actions for categories during event setup
 	public void addCat(String cat){
-		FestivalObject.Category.add(cat);
+		ArrayList<String> c = new ArrayList<String>();
+		c.add(cat);
+		FestivalObject.Category.addAll(c);
+		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
 	
 	public void deleteCat(String deadCat){
-		tempCat = FestivalObject.Category.get(FestivalObject.Category.indexOf(deadCat));
-		FestivalObject.Category.remove(deadCat);
+		tempCat = deadCat;
+		System.out.println(tempCat);
+		//try{
+		FestivalObject.Category.remove(tempCat);//}catch(NumberFormatException e){ e.getStackTrace();}
+		CatList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
 	public void deleteCatUndo(){
 		FestivalObject.Category.add(tempCat);
+		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
 	
 	public void moveCatUse(String useCat){
-		CatList2.add((Component) CatList.getSelectedValue());
-		CatBox.addItem(useCat);
+		tempCat2 = useCat;
+		ArrayList<String> uc = new ArrayList<String>();
+		uc.add(useCat);
+		FestivalObject.Category_Use.addAll(uc);
+		if(FestivalObject.Category.contains(tempCat2)){
+		FestivalObject.Category.remove(useCat);}
+		
+		CatList.setText(String.valueOf(FestivalObject.getCategory()));
+		CatList2.setText(String.valueOf(FestivalObject.getCategory_Use()));
+		try{
+		CatBox.addItem(tempCat2);}catch(NullPointerException e){e.getStackTrace();}
 	}
 	
 	public void moveCatBack(String noUseCat){
-		CatList.add((Component) CatList2.getSelectedValue());
-		CatBox.removeItem(noUseCat);
+		tempCat3 = noUseCat;
+		ArrayList<String> nuc = new ArrayList<String>();
+		nuc.add(noUseCat);
+		FestivalObject.Category.addAll(nuc);
+		if(FestivalObject.Category_Use.contains(noUseCat)){
+			FestivalObject.Category_Use.remove(noUseCat);}
+		
+		CatList.setText(String.valueOf(FestivalObject.getCategory()));
+		CatList2.setText(String.valueOf(FestivalObject.getCategory_Use()));
+		try{
+		CatBox.removeItem(tempCat3);}catch(NullPointerException e){e.getStackTrace();}
 	}
 	
 	//page buttons
@@ -409,6 +430,7 @@ public class EventPageSetup extends JFrame {
 		System.out.println(FestivalObject.getTBR());
 		System.out.println(FestivalObject.getLanes());
 		System.out.println(FestivalObject.getCategory());
+		System.out.println(FestivalObject.getCategory_Use());
 		System.out.println(FestivalObject.getBreakList());
 		System.out.println(FestivalObject.getTeam());
 		//seems these ones are...

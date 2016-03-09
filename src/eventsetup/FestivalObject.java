@@ -21,6 +21,8 @@ public class FestivalObject extends EventPageSetup{
 	
 	protected static ArrayList<String> Category = new ArrayList<String>();
 	
+	protected static ArrayList<String> Category_Use = new ArrayList<String>();
+	
 	protected static ArrayList<String> Team = new ArrayList<String>();
 
 	
@@ -65,6 +67,14 @@ public class FestivalObject extends EventPageSetup{
 
 	public void setCategory(ArrayList<String> category) {
 		Category = category;
+	}
+	
+	public static ArrayList<String> getCategory_Use() {
+		return Category_Use;
+	}
+
+	public void setCategory_Use(ArrayList<String> categoryUse) {
+		Category_Use = categoryUse;
 	}
 	
 	public static ArrayList<String> getTeam() {
