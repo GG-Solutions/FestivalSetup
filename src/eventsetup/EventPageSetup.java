@@ -15,6 +15,7 @@ import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.ComponentOrientation;
 
 
 public class EventPageSetup extends JFrame {
@@ -22,6 +23,7 @@ public class EventPageSetup extends JFrame {
 	/**
 	 * 
 	 */
+	//variables jumbled up b/c i added them as needed
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel teamSetup;
@@ -35,10 +37,12 @@ public class EventPageSetup extends JFrame {
 	private JTextField BreakList;
 	private JFormattedTextField CatList;
 	private JFormattedTextField CatList2;
+	private JFormattedTextField teamList;
 	private JComboBox<String> CatBox;
 	private String tempCat;
 	private String tempCat2;
 	private String tempCat3;
+	private String tempName;
 	private Integer tempBreak;
 		
 	
@@ -63,6 +67,7 @@ public class EventPageSetup extends JFrame {
 	 * Create the frame.
 	 */
 	public EventPageSetup() {
+		//page getting setup!
 		setTitle("Setup");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 540, 388);
@@ -97,7 +102,8 @@ public class EventPageSetup extends JFrame {
 		label_2.setBounds(271, 57, 61, 16);
 		teamSetup.add(label_2);
 		
-		JComboBox<String> CatBox = new JComboBox<String>();
+		CatBox = new JComboBox<String>();
+		CatBox.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		CatBox.setBounds(263, 74, 121, 27);
 		teamSetup.add(CatBox);
 		
@@ -110,7 +116,7 @@ public class EventPageSetup extends JFrame {
 		addTeam.setBounds(148, 52, 90, 29);
 		teamSetup.add(addTeam);
 		
-		JFormattedTextField teamList = new JFormattedTextField();
+		teamList = new JFormattedTextField();
 		teamList.setBounds(6, 100, 528, 162);
 		teamSetup.add(teamList);
 		
@@ -199,6 +205,8 @@ public class EventPageSetup extends JFrame {
 		lblBreakTimes.setBounds(274, 48, 84, 16);
 		contentPane.add(lblBreakTimes);
 		
+		//code i thought i'd use, but found a different way. might need to refer back to this
+		//at some point
 //		MaskFormatter broken = null;
 //		try {
 //			broken = new MaskFormatter("##:##");
@@ -338,6 +346,7 @@ public class EventPageSetup extends JFrame {
 	}
 	
 	//breaks for event setup
+	//adds break to list
 	public void addToBreak(String start, String end){
 		ArrayList<Integer> q = new ArrayList<Integer>();
 		ArrayList<Integer> w = new ArrayList<Integer>();
@@ -347,7 +356,7 @@ public class EventPageSetup extends JFrame {
 		FestivalObject.breakList.addAll(w);
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
-	
+	//deletes break form list
 	public void deleteBreak(String selected){
 		tempBreak = Integer.parseInt(selected);
 		System.out.println(tempBreak);
@@ -355,33 +364,33 @@ public class EventPageSetup extends JFrame {
 		FestivalObject.breakList.remove(tempBreak);}catch(NumberFormatException e){ e.getStackTrace();}
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
-	
+	//undo delete
 	public void deleteBreakUndo(){
 		FestivalObject.breakList.add(tempBreak);
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
 	//actions for categories during event setup
+	//adds category
 	public void addCat(String cat){
 		ArrayList<String> c = new ArrayList<String>();
 		c.add(cat);
 		FestivalObject.Category.addAll(c);
 		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
-	
+	//deletes category
 	public void deleteCat(String deadCat){
 		tempCat = deadCat;
 		System.out.println(tempCat);
-		//try{
-		FestivalObject.Category.remove(tempCat);//}catch(NumberFormatException e){ e.getStackTrace();}
-		CatList.setText(String.valueOf(FestivalObject.getBreakList()));
+		FestivalObject.Category.remove(tempCat);
+		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
-	
+	//undo delete
 	public void deleteCatUndo(){
 		FestivalObject.Category.add(tempCat);
 		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
-	
+	//moves category to be used and add to team setup combobox
 	public void moveCatUse(String useCat){
 		tempCat2 = useCat;
 		ArrayList<String> uc = new ArrayList<String>();
@@ -395,7 +404,7 @@ public class EventPageSetup extends JFrame {
 		try{
 		CatBox.addItem(tempCat2);}catch(NullPointerException e){e.getStackTrace();}
 	}
-	
+	//moves category back and removes form combobox on team setup
 	public void moveCatBack(String noUseCat){
 		tempCat3 = noUseCat;
 		ArrayList<String> nuc = new ArrayList<String>();
@@ -411,18 +420,19 @@ public class EventPageSetup extends JFrame {
 	}
 	
 	//page buttons
+	//goes to team setup
 	public void nextPage(){
 		FestivalObject.festName = FestName.getText();
 		FestivalObject.tbr = TBR.getText();
 		FestivalObject.lanes = LaneInput.getText();
 		teamSetup.setVisible(true);
 	}
-	
+	//goes back to event setup
 	public void prevPage(){
 		teamSetup.setVisible(false);
 	}
 	
-	public void finish(){
+	public void finish(){//will bring up popup with entered information
 		teamSetup.setVisible(false);
 		contentPane.setVisible(false);
 		//following prints are to test if the variables are getting information
@@ -438,21 +448,27 @@ public class EventPageSetup extends JFrame {
 	
 	//actions dealing w/ teams
 	public void addTeam(String name){
+		tempName = name;
 		if(FestivalObject.Team.contains(name)){
-			//update team category list
+			System.out.println("Name Already Exists\n");
 		}else{
 			FestivalObject.Team.add(name);
+			teamList.setText(String.valueOf(FestivalObject.getTeam()));
 		}
 	}
-	
+	//if team name exists and the names match up(as in it's not a new team) add the category to the team
 	public void addCatToTeam(Object Cat){
-		
+		if(FestivalObject.Team.contains(teamName.getText()) && teamName.getText() == tempName){
+			//
+		}else{
+			//FestivalObject.Team.add(Cat.toString());
+		}
 	}
-	
+	//remove team from arraylist
 	public void deleteTeam(String noTeam){
 		
 	}
-	
+	//undo delete
 	public void teamUndoDelete(){
 		
 	}

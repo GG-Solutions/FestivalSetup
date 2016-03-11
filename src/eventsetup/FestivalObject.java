@@ -9,6 +9,7 @@ public class FestivalObject extends EventPageSetup{
 	/**
 	 * 
 	 */
+	//festival object that will contain needed information aboutb the festival
 	private static final long serialVersionUID = 1L;
 
 	protected static String festName;
