@@ -6,7 +6,7 @@ public class TeamObject extends EventPageSetup
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static String teamName = "";
+	
 	private String category = "";
 	@SuppressWarnings("unused")
 	private int place = -1;		//set to -1 as default?
@@ -30,12 +30,12 @@ public class TeamObject extends EventPageSetup
 	
 	//see the UI and add constructors based on that
 	public TeamObject(String name) {
-		teamName = name;
+	//	teamName = name;
 	}
 	
 	//setters
 	public void setTeamName(String name) {
-		teamName = name;
+	//	teamName = name;
 	}
 	
 	public void setCategory(String cat) {
@@ -68,9 +68,9 @@ public class TeamObject extends EventPageSetup
 	}
 	
 	//getters
-	public String getTeamName() {
-		return teamName;
-	}
+	//public String getTeamName() {
+	//	return teamName;
+	//}
 	
 	public String setCategory() {
 		return category;

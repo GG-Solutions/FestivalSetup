@@ -43,7 +43,7 @@ public class EventPageSetup extends JFrame {
 	private String tempCat2;
 	private String tempCat3;
 	private String tempName;
-	private Integer tempBreak;
+	private int tempBreak;
 		
 	
 	/**
@@ -352,8 +352,8 @@ public class EventPageSetup extends JFrame {
 		ArrayList<Integer> w = new ArrayList<Integer>();
 		q.add(Integer.parseInt(start));
 		w.add(Integer.parseInt(end));
-		FestivalObject.breakList.addAll(q);
-		FestivalObject.breakList.addAll(w);
+		FestivalObject.breaksArray.addAll(q);
+		FestivalObject.breaksArray.addAll(w);
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	//deletes break form list
@@ -361,12 +361,12 @@ public class EventPageSetup extends JFrame {
 		tempBreak = Integer.parseInt(selected);
 		System.out.println(tempBreak);
 		try{
-		FestivalObject.breakList.remove(tempBreak);}catch(NumberFormatException e){ e.getStackTrace();}
+		FestivalObject.breaksArray.remove(tempBreak);}catch(NumberFormatException e){ e.getStackTrace();}
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	//undo delete
 	public void deleteBreakUndo(){
-		FestivalObject.breakList.add(tempBreak);
+		FestivalObject.breaksArray.add(tempBreak);
 		BreakList.setText(String.valueOf(FestivalObject.getBreakList()));
 	}
 	
@@ -375,19 +375,19 @@ public class EventPageSetup extends JFrame {
 	public void addCat(String cat){
 		ArrayList<String> c = new ArrayList<String>();
 		c.add(cat);
-		FestivalObject.Category.addAll(c);
+		FestivalObject.categoriesArray.addAll(c);
 		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
 	//deletes category
 	public void deleteCat(String deadCat){
 		tempCat = deadCat;
 		System.out.println(tempCat);
-		FestivalObject.Category.remove(tempCat);
+		FestivalObject.categoriesArray.remove(tempCat);
 		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
 	//undo delete
 	public void deleteCatUndo(){
-		FestivalObject.Category.add(tempCat);
+		FestivalObject.categoriesArray.add(tempCat);
 		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 	}
 	//moves category to be used and add to team setup combobox
@@ -396,8 +396,8 @@ public class EventPageSetup extends JFrame {
 		ArrayList<String> uc = new ArrayList<String>();
 		uc.add(useCat);
 		FestivalObject.Category_Use.addAll(uc);
-		if(FestivalObject.Category.contains(tempCat2)){
-		FestivalObject.Category.remove(useCat);}
+		if(FestivalObject.categoriesArray.contains(tempCat2)){
+		FestivalObject.categoriesArray.remove(useCat);}
 		
 		CatList.setText(String.valueOf(FestivalObject.getCategory()));
 		CatList2.setText(String.valueOf(FestivalObject.getCategory_Use()));
@@ -409,7 +409,7 @@ public class EventPageSetup extends JFrame {
 		tempCat3 = noUseCat;
 		ArrayList<String> nuc = new ArrayList<String>();
 		nuc.add(noUseCat);
-		FestivalObject.Category.addAll(nuc);
+		FestivalObject.categoriesArray.addAll(nuc);
 		if(FestivalObject.Category_Use.contains(noUseCat)){
 			FestivalObject.Category_Use.remove(noUseCat);}
 		
@@ -423,8 +423,8 @@ public class EventPageSetup extends JFrame {
 	//goes to team setup
 	public void nextPage(){
 		FestivalObject.festName = FestName.getText();
-		FestivalObject.tbr = TBR.getText();
-		FestivalObject.lanes = LaneInput.getText();
+		FestivalObject.timeBetweenRaces = Integer.parseInt(TBR.getText());
+		FestivalObject.lanes = Integer.parseInt(LaneInput.getText());
 		teamSetup.setVisible(true);
 	}
 	//goes back to event setup
@@ -449,16 +449,16 @@ public class EventPageSetup extends JFrame {
 	//actions dealing w/ teams
 	public void addTeam(String name){
 		tempName = name;
-		if(FestivalObject.Team.contains(name)){
+		if(FestivalObject.teamsArray.contains(name)){
 			System.out.println("Name Already Exists\n");
 		}else{
-			FestivalObject.Team.add(name);
+			FestivalObject.teamsArray.add(name);
 			teamList.setText(String.valueOf(FestivalObject.getTeam()));
 		}
 	}
 	//if team name exists and the names match up(as in it's not a new team) add the category to the team
 	public void addCatToTeam(Object Cat){
-		if(FestivalObject.Team.contains(teamName.getText()) && teamName.getText() == tempName){
+		if(FestivalObject.teamsArray.contains(teamName.getText()) && teamName.getText() == tempName){
 			//
 		}else{
 			//FestivalObject.Team.add(Cat.toString());

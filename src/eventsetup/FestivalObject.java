@@ -9,22 +9,22 @@ public class FestivalObject extends EventPageSetup{
 	/**
 	 * 
 	 */
-	//festival object that will contain needed information aboutb the festival
+	//festival object that will contain needed information about the festival
 	private static final long serialVersionUID = 1L;
 
 	protected static String festName;
 	
-	protected static String tbr;
+	public static int timeBetweenRaces;
 	
-	protected static String lanes;
+	public static int lanes;
 	
-	protected static ArrayList<Integer> breakList = new ArrayList<Integer>();
+	public static ArrayList<Integer> breaksArray = new ArrayList<Integer>();
 	
-	protected static ArrayList<String> Category = new ArrayList<String>();
+	public static ArrayList<String> categoriesArray = new ArrayList<String>();
 	
 	protected static ArrayList<String> Category_Use = new ArrayList<String>();
 	
-	protected static ArrayList<String> Team = new ArrayList<String>();
+	public static ArrayList<TeamObject> teamsArray = new ArrayList<TeamObject>();
 
 	
 	public FestivalObject() {};
@@ -38,36 +38,36 @@ public class FestivalObject extends EventPageSetup{
 		FestivalObject.festName = festName;
 	}
 
-	public static String getTBR() {
-		return tbr;
+	public static int getTBR() {
+		return timeBetweenRaces;
 	}
 
-	public static void setTBR(String tbr) {
-		FestivalObject.tbr = tbr;
+	public static void setTBR(int tbr) {
+		FestivalObject.timeBetweenRaces = tbr;
 	}
 
-	public static String getLanes() {
+	public static int getLanes() {
 		return lanes;
 	}
 
-	public static void setLanes(String lanes) {
+	public static void setLanes(int lanes) {
 		FestivalObject.lanes = lanes;
 	}
 
 	public static ArrayList<Integer> getBreakList() {
-		return breakList;
+		return breaksArray;
 	}
 
 	public void setBreakList(ArrayList<Integer> breakList) {
-		FestivalObject.breakList = breakList;
+		FestivalObject.breaksArray = breakList;
 	}
 
 	public static ArrayList<String> getCategory() {
-		return Category;
+		return categoriesArray;
 	}
 
 	public void setCategory(ArrayList<String> category) {
-		Category = category;
+		categoriesArray = category;
 	}
 	
 	public static ArrayList<String> getCategory_Use() {
@@ -78,12 +78,12 @@ public class FestivalObject extends EventPageSetup{
 		Category_Use = categoryUse;
 	}
 	
-	public static ArrayList<String> getTeam() {
-		return Team;
+	public static ArrayList<TeamObject> getTeam() {
+		return teamsArray;
 	}
 
-	public void setTeam(ArrayList<String> team) {
-		Team = team;
+	public void setTeam(ArrayList<TeamObject> team) {
+		teamsArray = team;
 	}
 	
 }
