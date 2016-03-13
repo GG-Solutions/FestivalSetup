@@ -1,0 +1,21 @@
+package eventsetup;
+
+import java.util.ArrayList;
+
+public class Festival {
+
+	private static String festName;
+
+	private static String tbr;
+
+	private static String lanes;
+	
+	private ArrayList<String> breakList = new ArrayList<String>();
+	
+	private ArrayList<String> Category = new ArrayList<String>();
+	
+	private String tempCat;
+	
+	private String tempBreak;
+	
+}
