@@ -24,7 +24,6 @@ public class FestivalObject extends EventPageSetup{
 	
 	protected static ArrayList<String> Category_Use = new ArrayList<String>();
 	
-	//should be teamobject, runs as string right now
 	public static ArrayList<String> teamsArray = new ArrayList<String>();
 
 	
